@@ -37,6 +37,7 @@ public class BookingMapper
   
   public Table getFreeTables(Date date, Time time, int covers){
 	  try {
+		  System.out.println("Dato: " + date + " Time: " + time);
 		Statement stmt = Database.getInstance().getConnection().createStatement() ;
 		ResultSet result = stmt.executeQuery("select * from `table` where oid not in (select reservation.table_id from"
 				+ " reservation natural join `table` where date = " + date + " and time = " + time + ") and places >= " + covers + ";") ;
