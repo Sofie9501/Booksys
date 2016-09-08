@@ -34,6 +34,24 @@ public class BookingMapper
     }
     return uniqueInstance ;
   }
+  
+  public int getFreeTables(Date date, Time time, int covers){
+	  try {
+		Statement stmt = Database.getInstance().getConnection().createStatement() ;
+		ResultSet result = stmt.executeQuery("select * from `table` where oid not in (select reservation.table_id from"
+				+ " reservation natural join `table` where date = " + date + " and time = " + time + ") and places >= " + covers) ;
+		
+		while(result.next()){
+			return result.getInt(1);
+		}
+		
+	} catch (SQLException e) {
+		e.printStackTrace();
+	}
+	  
+	  return 0;
+	  
+  }
 
   public Vector getBookings(Date date)
   {
