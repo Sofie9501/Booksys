@@ -38,10 +38,9 @@ public class BookingMapper
   public Table getFreeTables(Date date, Time time, int covers){
 	  try {
 		Statement stmt = Database.getInstance().getConnection().createStatement() ;
-		ResultSet result = stmt.executeQuery("select * from `table` where oid not in (select reservation.table_id from"
-				+ " reservation natural join `table` where date = " + date + " and time = '" + time + "' ) and places >= " + covers + ";") ;
+		ResultSet result = stmt.executeQuery("select * from `table` where number not in (select reservation.table_id from"
+				+ " reservation natural join `table` where date = '" + date + "' and time = '" + time + "' ) and places >= " + covers + ";") ;
 		while(result.next()){
-			System.out.println(result.getInt(2));
 			return new Table(result.getInt(2), result.getShort(3));
 		}
 		
@@ -124,6 +123,7 @@ public class BookingMapper
 		  + (arrivalTime == null ? "NULL" :
 		     ("'" + arrivalTime.toString() + "'"))
 		  + ")" ) ;
+    
     return new PersistentReservation(oid,
 				     covers,
 				     date,
