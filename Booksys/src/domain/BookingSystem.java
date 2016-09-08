@@ -10,7 +10,11 @@ package domain ;
 
 import java.sql.Date ;
 import java.sql.Time ;
-import java.util.* ;
+import java.util.Calendar;
+import java.util.Enumeration;
+import java.util.Vector;
+
+import persistency.BookingMapper;
 
 public class BookingSystem
 {
@@ -77,24 +81,44 @@ public class BookingSystem
     notifyObservers() ;
   }
   
-  public void makeReservation(int covers, Date date, Time time, int tno,
-			      String name, String phone)
+  //	Before: int tno
+  public void makeReservation(int covers, Date date, Time time, String name, String phone)
   {
-    if (!doubleBooked(time, tno, null) && !overflow(tno, covers)) {
-      Booking b
-	= restaurant.makeReservation(covers, date, time, tno, name, phone) ;
-      currentBookings.addElement(b) ;
-      notifyObservers() ;
-    }
+//    if (!doubleBooked(time, tno, null) && !overflow(tno, covers)) {
+//      Booking b
+//	= restaurant.makeReservation(covers, date, time, tno, name, phone) ;
+//      currentBookings.addElement(b) ;
+//      notifyObservers() ;
+//    }
+	  
+ 	  Booking b = restaurant.makeReservation(covers, date, time, name, phone);
+ 	  
+ 	  if(b != null){
+ 		  currentBookings.addElement(b);
+ 		  notifyObservers();
+ 	  }
+ 	  else{
+ 	 	  noTables();
+ 	  }
   }
  
-  public void makeWalkIn(int covers, Date date, Time time, int tno)
+  public void makeWalkIn(int covers, Date date, Time time)
   {
-    if (!doubleBooked(time, tno, null) && !overflow(tno, covers)) {
-      Booking b = restaurant.makeWalkIn(covers, date, time, tno) ;
-      currentBookings.addElement(b) ;
-      notifyObservers() ;
-    }
+//    if (!doubleBooked(time, tno, null) && !overflow(tno, covers)) {
+//      Booking b = restaurant.makeWalkIn(covers, date, time, tno) ;
+//      currentBookings.addElement(b) ;
+//      notifyObservers() ;
+//    }
+	  
+	  Booking b = restaurant.makeWalkIn(covers, date, time);
+	  
+ 	  if(b != null){
+ 		  currentBookings.addElement(b);
+ 		  notifyObservers();
+ 	  }
+ 	  else{
+ 	 	  noTables();
+ 	  }
   }
   
   public void selectBooking(int tno, Time time)
@@ -141,16 +165,16 @@ public class BookingSystem
 
   public void transfer(Time time, int tno)
   {
-    if (selectedBooking != null) {
-      if (selectedBooking.getTableNumber() != tno) {
-	if (!doubleBooked(selectedBooking.getTime(), tno, selectedBooking)
-	    && !overflow(tno, selectedBooking.getCovers())) {
-	  selectedBooking.setTable(restaurant.getTable(tno)) ;
-	  restaurant.updateBooking(selectedBooking) ;
-	}
-      }
-      notifyObservers() ;
-    }
+	  if (selectedBooking != null) {
+		  if (selectedBooking.getTableNumber() != tno) {
+			  if (!doubleBooked(selectedBooking.getTime(), tno, selectedBooking)
+					  && !overflow(tno, selectedBooking.getCovers())) {
+				  selectedBooking.setTable(restaurant.getTable(tno)) ;
+				  restaurant.updateBooking(selectedBooking) ;
+			  }
+		  }
+		  notifyObservers() ;
+	  }
   }
   
   private boolean doubleBooked(Time startTime, int tno, Booking ignore)
@@ -171,6 +195,10 @@ public class BookingSystem
       }
     }
     return doubleBooked ;
+  }
+  
+  private void noTables(){
+	  observerMessage("No tables available!", false);
   }
   
   private boolean overflow(int tno, int covers)

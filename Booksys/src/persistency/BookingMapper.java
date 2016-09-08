@@ -40,7 +40,7 @@ public class BookingMapper
 		Statement stmt = Database.getInstance().getConnection().createStatement() ;
 		ResultSet result = stmt.executeQuery("select * from `table` where number not in (select reservation.table_id from"
 				+ " reservation natural join `table` where date = '" + date + "' and time = '" + time + "' ) and places >= " + covers + ";") ;
-		while(result.next()){
+		if(result.next()){
 			return new Table(result.getInt(2), result.getShort(3));
 		}
 		
@@ -135,16 +135,21 @@ public class BookingMapper
   
   public PersistentWalkIn createWalkIn(int covers,
 				       Date date,
-				       Time time,
-				       Table table)
+				       Time time)
   {
+	  Table table = getFreeTables(date, time, covers);
+	  
+	  if(table == null){
+		  return null;
+	  }
+	  
     int oid = Database.getInstance().getId() ;
     performUpdate("INSERT INTO WalkIn " + "VALUES ('"
 		  + oid + "', '"
 		  + covers + "', '"
 		  + date + "', '"
 		  + time + "', '"
-		  + ((PersistentTable) table).getId() + "')" ) ;
+		  + table.getNumber() + "')" ) ;
     return new PersistentWalkIn(oid, covers, date, time, table) ;
   } 
 

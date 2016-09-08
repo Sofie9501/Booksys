@@ -40,20 +40,29 @@ class Restaurant
     return TableMapper.getInstance().getTableNumbers() ;
   }
 
-  public Booking makeReservation(int covers, Date date,
-				     Time time,
-				     int tno, String name, String phone)
+  public Booking makeReservation(int covers, Date date, Time time,
+				     String name, String phone)
   {
-    Table t = getTable(tno) ;
     Customer c = getCustomer(name, phone) ;
-    return bm.createReservation(covers, date, time, c, null) ;
+    Booking b = bm.createReservation(covers, date, time, c, null) ;
+    
+	  if(b != null){
+		  return b;
+	  }
+	  
+    return null;
+    
   }
 
-  public Booking makeWalkIn(int covers, Date date,
-			   Time time, int tno)
+  public Booking makeWalkIn(int covers, Date date,Time time)
   {
-    Table t = getTable(tno) ;
-    return bm.createWalkIn(covers, date, time, t) ;
+	  Booking b = bm.createWalkIn(covers, date, time) ;
+	  
+	  if(b != null){
+		  return b;
+	  }
+	  
+    return null;
   }
 
   public void updateBooking(Booking b)

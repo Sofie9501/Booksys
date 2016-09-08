@@ -26,10 +26,10 @@ import domain.BookingSystem;
 
 abstract class BookingDialog extends Dialog
 {
-  protected Choice    tableNumber ;
+//  protected Choice    tableNumber ;
   protected TextField covers ;
   protected TextField time ;
-  protected Label     tableNumberLabel ;
+//  protected Label     tableNumberLabel ;
   protected Label     coversLabel ;
   protected Label     timeLabel ;
   protected boolean   confirmed ;
@@ -55,15 +55,15 @@ abstract class BookingDialog extends Dialog
 	}
       }) ;
     
-    tableNumberLabel = new Label("Table number:", Label.RIGHT) ;
-    tableNumber = new Choice() ;
-    Enumeration enumeration = BookingSystem.getTableNumbers().elements() ;
-    while (enumeration.hasMoreElements()) {
-      tableNumber.add(((Integer) enumeration.nextElement()).toString()) ;
-    }
-    if (booking != null) {
-      tableNumber.select(Integer.toString(booking.getTable().getNumber())) ;
-    }
+//    tableNumberLabel = new Label("Table number:", Label.RIGHT) ;
+//    tableNumber = new Choice() ;
+//    Enumeration enumeration = BookingSystem.getTableNumbers().elements() ;
+//    while (enumeration.hasMoreElements()) {
+//      tableNumber.add(((Integer) enumeration.nextElement()).toString()) ;
+//    }
+//    if (booking != null) {
+//      tableNumber.select(Integer.toString(booking.getTable().getNumber())) ;
+//    }
 
     coversLabel = new Label("Covers:", Label.RIGHT) ;
     covers = new TextField(4) ;
@@ -94,10 +94,10 @@ abstract class BookingDialog extends Dialog
       }) ;
   }
   
-  int getTableNumber()
-  {
-    return Integer.parseInt(tableNumber.getSelectedItem()) ;
-  }
+//  int getTableNumber()
+//  {
+//    return Integer.parseInt(tableNumber.getSelectedItem()) ;
+//  }
 
   int getCovers()
   {

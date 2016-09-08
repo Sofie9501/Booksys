@@ -211,7 +211,7 @@ public class StaffUI
       bs.makeReservation(d.getCovers(),
 			 bs.getCurrentDate(),
 			 d.getTime(),
-			 d.getTableNumber(),
+//			 d.getTableNumber(),
 			 d.getCustomerName(),
 			 d.getPhoneNumber()) ;
     }
@@ -226,8 +226,8 @@ public class StaffUI
     if (d.isConfirmed()) {
       bs.makeWalkIn(d.getCovers(),
 		    bs.getCurrentDate(),
-		    d.getTime(),
-		    d.getTableNumber()) ;
+		    d.getTime());
+//		    d.getTableNumber()) ;
     }
   }
   

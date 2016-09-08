@@ -29,8 +29,8 @@ class WalkInDialog extends BookingDialog
 
     setLayout( new GridLayout(0, 2) ) ;
     
-    add(tableNumberLabel) ;
-    add(tableNumber) ;
+//    add(tableNumberLabel) ;
+//    add(tableNumber) ;
     
     add(coversLabel) ;
     add(covers) ;
