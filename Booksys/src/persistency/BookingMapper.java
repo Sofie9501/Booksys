@@ -37,12 +37,11 @@ public class BookingMapper
   
   public Table getFreeTables(Date date, Time time, int covers){
 	  try {
-		  System.out.println("Dato: " + date + " Time: " + time);
 		Statement stmt = Database.getInstance().getConnection().createStatement() ;
 		ResultSet result = stmt.executeQuery("select * from `table` where oid not in (select reservation.table_id from"
-				+ " reservation natural join `table` where date = " + date + " and time = " + time + ") and places >= " + covers + ";") ;
-		
+				+ " reservation natural join `table` where date = " + date + " and time = '" + time + "' ) and places >= " + covers + ";") ;
 		while(result.next()){
+			System.out.println(result.getInt(2));
 			return new Table(result.getInt(2), result.getShort(3));
 		}
 		
@@ -120,7 +119,7 @@ public class BookingMapper
 		  + covers + "', '"
 		  + date + "', '"
 		  + time + "', '"
-		  + table + "', '"
+		  + table.getNumber() + "', '"
 		  + ((PersistentCustomer) customer).getId() + "', "
 		  + (arrivalTime == null ? "NULL" :
 		     ("'" + arrivalTime.toString() + "'"))
