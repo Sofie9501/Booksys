@@ -46,7 +46,7 @@ class Restaurant
   {
     Table t = getTable(tno) ;
     Customer c = getCustomer(name, phone) ;
-    return bm.createReservation(covers, date, time, t, c, null) ;
+    return bm.createReservation(covers, date, time, c, null) ;
   }
 
   public Booking makeWalkIn(int covers, Date date,

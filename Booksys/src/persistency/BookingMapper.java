@@ -35,21 +35,21 @@ public class BookingMapper
     return uniqueInstance ;
   }
   
-  public int getFreeTables(Date date, Time time, int covers){
+  public Table getFreeTables(Date date, Time time, int covers){
 	  try {
 		Statement stmt = Database.getInstance().getConnection().createStatement() ;
 		ResultSet result = stmt.executeQuery("select * from `table` where oid not in (select reservation.table_id from"
-				+ " reservation natural join `table` where date = " + date + " and time = " + time + ") and places >= " + covers) ;
+				+ " reservation natural join `table` where date = " + date + " and time = " + time + ") and places >= " + covers + ";") ;
 		
 		while(result.next()){
-			return result.getInt(1);
+			return new Table(result.getInt(2), result.getShort(3));
 		}
 		
 	} catch (SQLException e) {
 		e.printStackTrace();
 	}
 	  
-	  return 0;
+	  return null;
 	  
   }
 
@@ -104,17 +104,22 @@ public class BookingMapper
   public PersistentReservation createReservation(int covers,
 						 Date date,
 						 Time time,
-						 Table table,
 						 Customer customer,
 						 Time arrivalTime)
   {
+	  Table table = getFreeTables(date, time, covers);
+	  
+	  if(table == null){
+		  return null;
+	  }
+
     int oid = Database.getInstance().getId() ;
     performUpdate("INSERT INTO Reservation " + "VALUES ('"
 		  + oid + "', '"
 		  + covers + "', '"
 		  + date + "', '"
 		  + time + "', '"
-		  + ((PersistentTable) table).getId() + "', '"
+		  + table + "', '"
 		  + ((PersistentCustomer) customer).getId() + "', "
 		  + (arrivalTime == null ? "NULL" :
 		     ("'" + arrivalTime.toString() + "'"))
